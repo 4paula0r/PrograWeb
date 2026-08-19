@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Datos para Empleados</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #fafafa;
+      color: #171717;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border: 1px solid #e5e5e5;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+      width: 100%;
+      max-width: 480px;
+      padding: 36px 32px;
+      position: relative;
+    }
+
+    .header {
+      margin-bottom: 28px;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #0a0a0a;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: #737373;
+      font-weight: 400;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: #404040;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 14px;
+      color: #0a0a0a;
+      background-color: #ffffff;
+      border: 1px solid #d4d4d8;
+      border-radius: 8px;
+      outline: none;
+      transition: all 0.15s ease-in-out;
+    }
+
+    input::placeholder {
+      color: #a1a1aa;
+    }
+
+    input:focus {
+      border-color: #18181b;
+      box-shadow: 0 0 0 3px rgba(24, 24, 27, 0.08);
+    }
+
+    input.input-error {
+      border-color: #ef4444 !important;
+      background-color: #fef2f2;
+    }
+
+    input.input-error:focus {
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+    }
+
+    .field-error {
+      color: #ef4444;
+      font-size: 11px;
+      font-weight: 400;
+      margin-top: 5px;
+      min-height: 14px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 11px;
+      background-color: #18181b;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.15s ease, transform 0.05s ease;
+      margin-top: 8px;
+    }
+
+    .btn-submit:hover {
+      background-color: #27272a;
+    }
+
+    .btn-submit:active {
+      transform: scale(0.99);
+    }
+
+    .list-section {
+      margin-top: 32px;
+      border-top: 1px solid #f4f4f5;
+      padding-top: 24px;
+    }
+
+    .list-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: #737373;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    li {
+      background-color: #fafafa;
+      border: 1px solid #f4f4f5;
+      padding: 12px 14px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      transition: border-color 0.15s ease;
+    }
+
+    li:hover {
+      border-color: #e4e4e7;
+    }
+
+    .record-info {
+      font-size: 13px;
+      color: #18181b;
+      line-height: 1.4;
+    }
+
+    .record-info strong {
+      font-weight: 600;
+    }
+
+    .record-meta {
+      font-size: 11px;
+      color: #71717a;
+      margin-top: 2px;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: #a1a1aa;
+      font-size: 13px;
+      padding: 16px 0;
+      border: 1px dashed #e4e4e7;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    
+    <div class="header">
+      <h1 class="title">Registro de Personas</h1>
+      <p class="subtitle">Ingrese la información requerida a continuación.</p>
+    </div>
+
+    <form id="registroForm">
+      
+      <div class="form-group">
+        <label for="nit">NIT</label>
+        <input type="text" id="nit" placeholder="Ej. 123456789 o 1234567-K" maxlength="10" autocomplete="off">
+        <div id="err-nit" class="field-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" placeholder="Ej. Ana Paula" autocomplete="off">
+        <div id="err-nombre" class="field-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="apellido">Apellido</label>
+        <input type="text" id="apellido" placeholder="Ej. Ortiz Hernández" autocomplete="off">
+        <div id="err-apellido" class="field-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Correo Electrónico</label>
+        <input type="email" id="email" placeholder="Ej. usuario@ejemplo.com" autocomplete="off">
+        <div id="err-email" class="field-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="telefono">Teléfono</label>
+        <input type="text" id="telefono" placeholder="Ej. 55554444" maxlength="8" autocomplete="off">
+        <div id="err-telefono" class="field-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="fechaNacimiento">Fecha de Nacimiento</label>
+        <input type="date" id="fechaNacimiento">
+        <div id="err-fechaNacimiento" class="field-error"></div>
+      </div>
+
+      <button type="button" class="btn-submit" onclick="agregarPersona()">Guardar Registro</button>
+    </form>
+
+    <div class="list-section">
+      <div class="list-title">Historial de Registros</div>
+      <ul id="listaEstudiantes"></ul>
+    </div>
+
+  </div>
+
+  <script>
+    const MAX_LONGITUD_NOMBRE = 20;
+    const estudiantes = JSON.parse(localStorage.getItem('estudiantes_db')) || [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderizarLista();
+      configurarAutoCorreccion();
+    });
+
+    function configurarAutoCorreccion() {
+      const nitInput = document.getElementById('nit');
+      const nombreInput = document.getElementById('nombre');
+      const apellidoInput = document.getElementById('apellido');
+      const emailInput = document.getElementById('email');
+      const telefonoInput = document.getElementById('telefono');
+      const fechaInput = document.getElementById('fechaNacimiento');
+
+      nitInput.addEventListener('input', (e) => {
+        const valorOriginal = e.target.value;
+        const valorLimpio = valorOriginal.replace(/[^0-9kK-]/g, '').toUpperCase();
+
+        if (valorOriginal !== valorLimpio) {
+          mostrarErrorIndividual('nit', 'Carácter omitido (Solo números, guión y "K").');
+        } else {
+          limpiarErrorIndividual('nit');
+        }
+        e.target.value = valorLimpio;
+      });
+
+      nombreInput.addEventListener('input', (e) => {
+        const valorOriginal = e.target.value;
+        let valorLimpio = valorOriginal.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+
+        if (valorOriginal !== valorLimpio) {
+          mostrarErrorIndividual('nombre', 'Carácter omitido (Solo se permiten letras).');
+        } else if (valorLimpio.length > MAX_LONGITUD_NOMBRE) {
+          valorLimpio = valorLimpio.substring(0, MAX_LONGITUD_NOMBRE);
+          mostrarErrorIndividual('nombre', `Máximo ${MAX_LONGITUD_NOMBRE} caracteres permitidos.`);
+        } else {
+          limpiarErrorIndividual('nombre');
+        }
+        e.target.value = valorLimpio;
+      });
+
+      apellidoInput.addEventListener('input', (e) => {
+        const valorOriginal = e.target.value;
+        let valorLimpio = valorOriginal.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+
+        if (valorOriginal !== valorLimpio) {
+          mostrarErrorIndividual('apellido', 'Carácter omitido (Solo se permiten letras).');
+        } else if (valorLimpio.length > MAX_LONGITUD_NOMBRE) {
+          valorLimpio = valorLimpio.substring(0, MAX_LONGITUD_NOMBRE);
+          mostrarErrorIndividual('apellido', `Máximo ${MAX_LONGITUD_NOMBRE} caracteres permitidos.`);
+        } else {
+          limpiarErrorIndividual('apellido');
+        }
+        e.target.value = valorLimpio;
+      });
+
+      emailInput.addEventListener('input', () => {
+        limpiarErrorIndividual('email');
+      });
+
+      telefonoInput.addEventListener('input', (e) => {
+        const valorOriginal = e.target.value;
+        const valorLimpio = valorOriginal.replace(/[^0-9]/g, '');
+
+        if (valorOriginal !== valorLimpio) {
+          mostrarErrorIndividual('telefono', 'Solo se permiten números.');
+        } else {
+          limpiarErrorIndividual('telefono');
+        }
+        e.target.value = valorLimpio;
+      });
+
+      fechaInput.addEventListener('change', () => {
+        validarFecha();
+      });
+    }
+
+    function validarNitSAT(nitValue) {
+      if (!nitValue) {
+        mostrarErrorIndividual('nit', 'El NIT es requerido.');
+        return false;
+      }
+
+      const nitSinGuion = nitValue.replace(/-/g, '');
+
+      const esNitNuevoCUI = /^[0-9]{9}$/.test(nitSinGuion);
+      const esNitAntiguo = /^[0-9]{1,7}[0-9K]$/.test(nitSinGuion) && (nitSinGuion.length >= 2 && nitSinGuion.length <= 8);
+
+      if (!esNitNuevoCUI && !esNitAntiguo) {
+        mostrarErrorIndividual('nit', 'Debe tener 9 dígitos (CUI) o de 2 a 8 dígitos (Antiguo).');
+        return false;
+      }
+
+      limpiarErrorIndividual('nit');
+      return true;
+    }
+
+    function validarEmail(emailValue) {
+      if (!emailValue) {
+        mostrarErrorIndividual('email', 'El correo electrónico es requerido.');
+        return false;
+      }
+
+      const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!regexEmail.test(emailValue)) {
+        mostrarErrorIndividual('email', 'Ingrese un correo electrónico válido.');
+        return false;
+      }
+
+      limpiarErrorIndividual('email');
+      return true;
+    }
+
+    function validarTelefono(telefonoValue) {
+      if (!telefonoValue) {
+        mostrarErrorIndividual('telefono', 'El teléfono es requerido.');
+        return false;
+      }
+
+      if (telefonoValue.length !== 8) {
+        mostrarErrorIndividual('telefono', 'El teléfono debe tener exactamente 8 dígitos.');
+        return false;
+      }
+
+      limpiarErrorIndividual('telefono');
+      return true;
+    }
+
+    function mostrarErrorIndividual(campoId, mensaje) {
+      const inputElem = document.getElementById(campoId);
+      const errDiv = document.getElementById(`err-${campoId}`);
+
+      inputElem.classList.add('input-error');
+      errDiv.textContent = mensaje;
+    }
+
+    function limpiarErrorIndividual(campoId) {
+      const inputElem = document.getElementById(campoId);
+      const errDiv = document.getElementById(`err-${campoId}`);
+
+      inputElem.classList.remove('input-error');
+      errDiv.textContent = '';
+    }
+
+    function limpiarTodosLosErrores() {
+      ['nit', 'nombre', 'apellido', 'email', 'telefono', 'fechaNacimiento'].forEach(id => limpiarErrorIndividual(id));
+    }
+
+    function validarFecha() {
+      const fechaInput = document.getElementById('fechaNacimiento').value;
+
+      if (!fechaInput) {
+        mostrarErrorIndividual('fechaNacimiento', 'Seleccione una fecha válida.');
+        return false;
+      }
+
+      const fechaNacimiento = new Date(fechaInput + 'T00:00:00');
+      const hoy = new Date();
+      hoy.setHours(0, 0, 0, 0);
+
+      if (fechaNacimiento > hoy) {
+        mostrarErrorIndividual('fechaNacimiento', 'La fecha no puede ser futura.');
+        return false;
+      }
+
+      let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+      const mesDiff = hoy.getMonth() - fechaNacimiento.getMonth();
+      const diaDiff = hoy.getDate() - fechaNacimiento.getDate();
+
+      if (mesDiff < 0 || (mesDiff === 0 && diaDiff < 0)) {
+        edad--;
+      }
+
+      if (edad < 18) {
+        mostrarErrorIndividual('fechaNacimiento', 'Debe ser mayor de edad (18+ años).');
+        return false;
+      }
+
+      limpiarErrorIndividual('fechaNacimiento');
+      return true;
+    }
+
+    function agregarPersona() {
+      limpiarTodosLosErrores();
+
+      const nitInput = document.getElementById('nit').value.trim();
+      const nombreInput = document.getElementById('nombre').value.trim();
+      const apellidoInput = document.getElementById('apellido').value.trim();
+      const emailInput = document.getElementById('email').value.trim();
+      const telefonoInput = document.getElementById('telefono').value.trim();
+      const fechaInput = document.getElementById('fechaNacimiento').value;
+
+      let esValido = true;
+
+      if (!validarNitSAT(nitInput)) esValido = false;
+
+      if (!nombreInput) {
+        mostrarErrorIndividual('nombre', 'El Nombre es requerido.');
+        esValido = false;
+      } else if (nombreInput.length > MAX_LONGITUD_NOMBRE) {
+        mostrarErrorIndividual('nombre', `El Nombre no puede exceder ${MAX_LONGITUD_NOMBRE} caracteres.`);
+        esValido = false;
+      }
+
+      if (!apellidoInput) {
+        mostrarErrorIndividual('apellido', 'El Apellido es requerido.');
+        esValido = false;
+      } else if (apellidoInput.length > MAX_LONGITUD_NOMBRE) {
+        mostrarErrorIndividual('apellido', `El Apellido no puede exceder ${MAX_LONGITUD_NOMBRE} caracteres.`);
+        esValido = false;
+      }
+
+      if (!validarEmail(emailInput)) esValido = false;
+      if (!validarTelefono(telefonoInput)) esValido = false;
+      if (!validarFecha()) esValido = false;
+
+      if (!esValido) return;
+
+      const nuevoEstudiante = {
+        nit: nitInput,
+        nombre: nombreInput,
+        apellido: apellidoInput,
+        email: emailInput,
+        telefono: telefonoInput,
+        fechaNacimiento: fechaInput
+      };
+
+      estudiantes.push(nuevoEstudiante);
+      guardarEnLocalStorage();
+
+      renderizarLista();
+      document.getElementById('registroForm').reset();
+    }
+
+    function guardarEnLocalStorage() {
+      localStorage.setItem('estudiantes_db', JSON.stringify(estudiantes));
+    }
+
+    function renderizarLista() {
+      const ul = document.getElementById('listaEstudiantes');
+      ul.innerHTML = '';
+
+      if (estudiantes.length === 0) {
+        ul.innerHTML = '<div class="empty-state">No hay registros en el historial.</div>';
+        return;
+      }
+
+      estudiantes.forEach((est) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <div class="record-info">
+            <strong>${est.nombre} ${est.apellido}</strong>
+            <div class="record-meta">NIT: ${est.nit} &bull; Tel: ${est.telefono}</div>
+            <div class="record-meta">${est.email} &bull; F. Nac: ${est.fechaNacimiento}</div>
+          </div>
+        `;
+        ul.appendChild(li);
+      });
+    }
+  </script>
+</body>
+</html>
